@@ -38,7 +38,7 @@ class LoansContainer extends Component {
         const loans = res.data.loans.map(loan => {
           return {
             ...loan,
-            isInvestment: false
+            isInvested: false
           };
         });
 
@@ -84,19 +84,23 @@ class LoansContainer extends Component {
 
     const { form, loans, selectedLoanId } = this.state;
 
-    const loansCopy = [...loans];
-    const loanIndex = loansCopy.findIndex(item => item.id === selectedLoanId);
+    if (form.amountOfInvest) {
+      const loansCopy = [...loans];
+      const loanIndex = loansCopy.findIndex(item => item.id === selectedLoanId);
 
-    let remainPrice =
-      stringPriceToInt(loansCopy[loanIndex].available) -
-      parseInt(form.amountOfInvest, 10);
+      let remainPrice =
+        stringPriceToInt(loansCopy[loanIndex].available) -
+        parseInt(form.amountOfInvest, 10);
 
-    loansCopy[loanIndex].available = intPriceToString(remainPrice);
-    loansCopy[loanIndex].isInvested = true;
+      loansCopy[loanIndex].available = intPriceToString(remainPrice);
+      loansCopy[loanIndex].isInvested = true;
 
-    this.closeForm(loansCopy);
+      this.closeForm(loansCopy);
 
-    this.calculateTotalAvailable(loansCopy, true);
+      this.calculateTotalAvailable(loansCopy, true);
+    } else {
+      this.closeForm();
+    }
   };
 
   handleInputChange = e => {
@@ -218,6 +222,7 @@ class LoansContainer extends Component {
                       className="loans__modal-invest-input"
                       value={intPriceToString(form.amountOfInvest)}
                       onChange={this.handleInputChange}
+                      placeholder="Amount"
                     />
                     <Button
                       variant="contained"

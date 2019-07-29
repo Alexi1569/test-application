@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Icon } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 import './LoansItem.sass';
 
@@ -35,6 +36,20 @@ const LoansItem = ({ loan, onLoanClick }) => {
       </div>
     </div>
   );
+};
+
+LoansItem.propTypes = {
+  loan: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    tranche: PropTypes.string.isRequired,
+    available: PropTypes.string.isRequired,
+    annualised_return: PropTypes.string.isRequired,
+    ltv: PropTypes.string.isRequired,
+    amount: PropTypes.string.isRequired,
+    isInvested: PropTypes.bool.isRequired
+  }),
+  onLoanClick: PropTypes.func.isRequired
 };
 
 export default LoansItem;
